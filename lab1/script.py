@@ -73,10 +73,10 @@ plt.xlabel("Rozegranych gier (x1000)")
 
 plt.tick_params(labeltop="on")
 
-plt.grid(True, color="0.75")
+plt.grid(True, color="0.80")
 
 legend = plt.legend(loc = "lower right", numpoints=2, shadow=False, fancybox=True, prop={"size":12})
-legend.get_frame().set_alpha(0.55)
+legend.get_frame().set_alpha(0.50)
 
 plt.xlim(0,500)
 plt.twiny()
