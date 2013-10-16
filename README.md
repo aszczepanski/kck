@@ -1,4 +1,4 @@
 kck
 ===
 
-zadania z przedmiotu komunikacja człowkei-komputer
+zadania z przedmiotu komunikacja człowiek-komputer
