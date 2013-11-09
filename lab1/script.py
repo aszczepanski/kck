@@ -31,7 +31,7 @@ def import_data(fileName, algorithmName):
 				cur_data["generation"] = int(row[0])
 				cur_data["effort"] = float(row[1])
 				cur_data["values"] = map(lambda x: float(x), row[2:])
-				
+
 				data["data"].append(cur_data)
 				data["last"] = map(lambda x: float(x), row[2:])
 	finally:
@@ -42,10 +42,10 @@ def import_data(fileName, algorithmName):
 def draw_plot(data, marker, color):
 	args = []
 	values = []
-	
+
 	for i in range(len(data["data"])):
 		args.append(data["data"][i]["effort"]/1000.0)
-		values.append( np.mean(data["data"][i]["values"])*100.0 ) 
+		values.append( np.mean(data["data"][i]["values"])*100.0 )
 		#print args[i], values[i]
 
 	plt.plot(args, values, marker+color+'-', label = data["data"][i]["name"], markersize=7, markevery=25)
