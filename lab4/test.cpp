@@ -78,8 +78,8 @@ static void prepareImageWithContours(const cv::Mat& src, cv::Mat& dst, int thres
 	threshold(src_gray, canny_output, thresh, 255, THRESH_BINARY_INV);
 	//Canny(canny_output, canny_output, thresh, thresh*2, 3);
 
-	namedWindow("xxx", WINDOW_AUTOSIZE);
-	imshow("xxx", canny_output);
+	//namedWindow("xxx", WINDOW_AUTOSIZE);
+	//imshow("xxx", canny_output);
 
 	/// Find contours
 	findContours(canny_output, contours, hierarchy, CV_RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0,0));
@@ -119,7 +119,7 @@ int main(int, char* argv[])
 
 	if (input.good())
 	{
-		cout << "opened" << endl;
+		//cout << "opened" << endl;
 		int n;
 		input >> n;
 		for (int i=0; i<n && !input.eof(); i++)
@@ -131,7 +131,7 @@ int main(int, char* argv[])
 			int thresh, blurSize;
 			input >> imageName >> thresh >> blurSize;
 
-			std::cout << imageName << " - " << thresh << " - " << blurSize << std::endl;
+			//std::cout << imageName << " - " << thresh << " - " << blurSize << std::endl;
 
 			/// Load source image
 			src = imread(imageName, 1);
@@ -146,18 +146,18 @@ int main(int, char* argv[])
 			//createTrackbar( " Canny thresh:", "Source", &thresh, max_thresh, thresh_callback );
 			//thresh_callback( 0, 0 );
 			
-			vector<Mat> imgs(2);
-			imgs[0] = src.clone();
-			imgs[1] = src.clone();
+			//vector<Mat> imgs(2);
+			//imgs[0] = src.clone();
+			//imgs[1] = src.clone();
 
 			Mat dst = src.clone();
 			prepareImageWithContours(src, dst, thresh, blurSize, false);
 
-			imgs[1] = dst.clone();
+			//imgs[1] = dst.clone();
 
-			Mat ttt = mergePictures(imgs, 2, 2);
-			namedWindow("imgs", WINDOW_AUTOSIZE);
-			imshow("imgs", ttt);
+			//Mat ttt = mergePictures(imgs, 2, 2);
+			//namedWindow("imgs", WINDOW_AUTOSIZE);
+			//imshow("imgs", ttt);
 
 			imshow(source_window, dst);
 
