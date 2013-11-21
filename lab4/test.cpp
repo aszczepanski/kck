@@ -14,7 +14,7 @@ static Mat src_gray;
 static int thresh = 100;
 static int max_thresh = 255;
 static RNG rng(12345);
-static int blurSize = 3;
+static int blurSize = 4;
 
 static void thresh_callback(int, void*);
 
@@ -62,20 +62,52 @@ static cv::Mat mergePictures(std::vector<cv::Mat>& images, int cols, int min_gap
 	return result;
 }
 
-static void prepareImageWithContours(const cv::Mat& src, cv::Mat& dst, int thresh, int blurSize, bool clearDst = true)
+static void prepareImageWithContours(const cv::Mat& src, cv::Mat& dst, bool clearDst = true)
 {
 	/// Convert image to gray and blur it
 	cvtColor(src, src_gray, COLOR_BGR2GRAY);
+	int blurSize = 5;
 	blur(src_gray, src_gray, Size(blurSize,blurSize));
 
 	Mat canny_output;
 	vector<vector<Point> > contours;
 	vector<Vec4i> hierarchy;
 
+	/// erode
+	int erosion_elem = 0;
+	int erosion_size = 4;
+	int erosion_type;
+	if( erosion_elem == 0 ){ erosion_type = MORPH_RECT; }
+	else if( erosion_elem == 1 ){ erosion_type = MORPH_CROSS; }
+	else if( erosion_elem == 2) { erosion_type = MORPH_ELLIPSE; }
+
+	Mat element1 = getStructuringElement( erosion_type,
+			Size( 2*erosion_size + 1, 2*erosion_size+1 ),
+			Point( erosion_size, erosion_size ) );
+
+	/// Apply the erosion operation
+	erode( src_gray, src_gray, element1 );
+
+
 	/// Detect edges using canny
-	//Canny(src_gray, canny_output, thresh, thresh*2, 3);
+	Canny(src_gray, canny_output, 20, 100, 3);
+
+	/// dilate
+	int dilation_elem = 0;
+	int dilation_size = 5;//2;
+	int dilation_type;
+	if( dilation_elem == 0 ){ dilation_type = MORPH_RECT; }
+	else if( dilation_elem == 1 ){ dilation_type = MORPH_CROSS; }
+	else if( dilation_elem == 2) { dilation_type = MORPH_ELLIPSE; }
+
+	Mat element = getStructuringElement( dilation_type,
+			Size( 2*dilation_size + 1, 2*dilation_size+1 ),
+			Point( dilation_size, dilation_size ) );
+	/// Apply the dilation operation
+	dilate( canny_output, canny_output, element );
+
 	//threshold(canny_output, canny_output, thresh, 255, THRESH_BINARY_INV);
-	threshold(src_gray, canny_output, thresh, 255, THRESH_BINARY_INV);
+	//threshold(src_gray, canny_output, thresh, 255, THRESH_BINARY_INV);
 	//Canny(canny_output, canny_output, thresh, thresh*2, 3);
 
 	//namedWindow("xxx", WINDOW_AUTOSIZE);
@@ -128,8 +160,7 @@ int main(int, char* argv[])
 			getline(input, line);
 
 			string imageName;
-			int thresh, blurSize;
-			input >> imageName >> thresh >> blurSize;
+			input >> imageName;
 
 			//std::cout << imageName << " - " << thresh << " - " << blurSize << std::endl;
 
@@ -151,7 +182,7 @@ int main(int, char* argv[])
 			//imgs[1] = src.clone();
 
 			Mat dst = src.clone();
-			prepareImageWithContours(src, dst, thresh, blurSize, false);
+			prepareImageWithContours(src, dst, false);
 
 			//imgs[1] = dst.clone();
 
