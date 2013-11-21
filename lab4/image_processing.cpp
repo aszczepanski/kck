@@ -41,8 +41,7 @@ cv::Mat mergePictures(std::vector<cv::Mat>& images, int cols, int min_gap_size)
 			if ( i >= images.size() ) // shouldn't happen, but let's be safe
 				return result;
 			// get the ROI in our result-image
-			cv::Mat to(result,
-					cv::Range(current_height, current_height + images[i].rows),
+			cv::Mat to(result, cv::Range(current_height, current_height + images[i].rows),
 					cv::Range(current_width, current_width + images[i].cols));
 			// copy the current image to the ROI
 			images[i++].copyTo(to);
@@ -59,7 +58,7 @@ void prepareImageWithContours(const cv::Mat& src, cv::Mat& dst, bool clearDst)
 {
 	/// Convert image to gray and blur it
 	cvtColor(src, src_gray, COLOR_BGR2GRAY);
-	int blurSize = 5;
+	const int blurSize = 5;
 	blur(src_gray, src_gray, Size(blurSize,blurSize));
 
 	Mat canny_output;
@@ -67,8 +66,8 @@ void prepareImageWithContours(const cv::Mat& src, cv::Mat& dst, bool clearDst)
 	vector<Vec4i> hierarchy;
 
 	/// erode
-	int erosion_elem = 0;
-	int erosion_size = 4;
+	const int erosion_elem = 0;
+	const int erosion_size = 4;
 	int erosion_type;
 	if( erosion_elem == 0 ){ erosion_type = MORPH_RECT; }
 	else if( erosion_elem == 1 ){ erosion_type = MORPH_CROSS; }
@@ -86,8 +85,8 @@ void prepareImageWithContours(const cv::Mat& src, cv::Mat& dst, bool clearDst)
 	Canny(src_gray, canny_output, 20, 100, 3);
 
 	/// dilate
-	int dilation_elem = 0;
-	int dilation_size = 2;
+	const int dilation_elem = 0;
+	const int dilation_size = 2;
 	int dilation_type;
 	if( dilation_elem == 0 ){ dilation_type = MORPH_RECT; }
 	else if( dilation_elem == 1 ){ dilation_type = MORPH_CROSS; }

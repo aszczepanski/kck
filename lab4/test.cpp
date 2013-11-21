@@ -41,7 +41,6 @@ int main(int, char* argv[])
 			//imgs[1] = dst.clone();
 
 /*
-			/// Create Window
 			string source_window = "Picture";
 			namedWindow(source_window, WINDOW_AUTOSIZE);
 			imshow(source_window, dst);
